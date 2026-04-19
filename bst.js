@@ -89,7 +89,18 @@ class Tree {
                         preCurrent.right = null
                     } else if (preCurrent === current) {
                         this.#root = null
-                    }
+                    };
+                    return this;
+                }
+                if (current.left === null || current.right === null) {
+                    let childNode = current.left || current.right;
+                    if (preCurrent.left === current) {
+                        preCurrent.left = childNode
+                    } else if (preCurrent.right === current) {
+                        preCurrent.right = childNode
+                    } else if (preCurrent === current) {
+                        this.#root = childNode
+                    };
                     return this;
                 }
             };
@@ -118,11 +129,11 @@ class Tree {
     }
 }
 
-// const tree = new Tree([1, 20, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-const tree = new Tree([1]);
+const tree = new Tree([1, 20, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+// const tree = new Tree([1, 20]);
 tree.print();
 tree.prettyPrint();
-tree.deleteItem(1);
+tree.deleteItem(5);
 tree.print();
 tree.prettyPrint();
 
