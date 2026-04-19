@@ -10,7 +10,7 @@ class Node {
 }
 
 class Tree {
-    #root
+    #root = null;
     constructor(array = []) {
         const arrSort = [...new Set(array)].sort((a, b) => a - b);
         this.#root = this.#buildTree(arrSort)
@@ -73,6 +73,36 @@ class Tree {
         };
     }
 
+    deleteItem(value) {
+        if (!this.includes(value)) return this;
+
+        if (this.#root === null) return this;
+
+        let current = this.#root;
+        let preCurrent = current;
+        while (current !== null) {
+            if (current.value === value) {
+                if (current.left === null && current.right === null) {
+                    if (preCurrent.left === current) {
+                        preCurrent.left = null
+                    } else if (preCurrent.right === current) {
+                        preCurrent.right = null
+                    } else if (preCurrent === current) {
+                        this.#root = null
+                    }
+                    return this;
+                }
+            };
+            preCurrent = current;
+            if (value < current.value) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+        
+    }
+
     prettyPrint (node = this.#root, prefix = '', isLeft = true) {
         if (node === null || node === undefined) {
             return;
@@ -88,8 +118,12 @@ class Tree {
     }
 }
 
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-const x = tree.insert(20).insert(22);
+// const tree = new Tree([1, 20, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+const tree = new Tree([1]);
+tree.print();
+tree.prettyPrint();
+tree.deleteItem(1);
+tree.print();
 tree.prettyPrint();
 
 
