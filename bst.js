@@ -133,22 +133,15 @@ class Tree {
         if (typeof callback !== 'function') {
             throw new Error("A callback function is required!");
         };
-        let queue = [];
-        queue.push(this.#root);
-        while (true) {
-            let newQueue = [];
-            for (const i of queue) {
-                callback(i.value);
-                if (i.left !== null) {
-                newQueue.push(i.left);
-                };
-                if (i.right !== null) {
-                    newQueue.push(i.right);
-                };
-            }
-            if (newQueue.length === 0) return this;
-            queue = newQueue
+        if (this.#root === null) return this;
+        let queue = [this.#root];
+        while (queue.length > 0) {
+            let current = queue.shift();
+            callback(current.value);
+            if (current.left) queue.push(current.left);
+            if (current.right) queue.push(current.right);
         }
+        return this;
     }
 
     prettyPrint (node = this.#root, prefix = '', isLeft = true) {
@@ -172,7 +165,6 @@ class Tree {
     collectValues(value) {
         const result = [];
         result.push(value);
-        console.log(result)
     }
 }
 
@@ -180,7 +172,7 @@ const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 tree.print();
 tree.prettyPrint();
-tree.levelOrderForEach(tree.collectValues);
+tree.levelOrderForEach(console.log);
 
 
 
