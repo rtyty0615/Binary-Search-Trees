@@ -134,15 +134,28 @@ class Tree {
             throw new Error("A callback function is required!");
         };
         if (this.#root === null) return this;
-        let queue = [this.#root];
-        while (queue.length > 0) {
-            let current = queue.shift();
-            callback(current.value);
-            if (current.left) queue.push(current.left);
-            if (current.right) queue.push(current.right);
-        }
-        return this;
+        let current = this.#root;
+        this.helperFunction(callback, current);
+        return this
     }
+
+    helperFunction(callback, current) {
+        callback(current.value);
+        if (current.left === null && current.right === null) {
+            return this;
+        };
+        if (current.left !== null) {
+            this.helperFunction(callback, current.left)
+        };
+        if (current.right !== null) {
+            this.helperFunction(callback, current.right)
+        };
+    }
+
+    countHeight() {
+
+    }
+
 
     prettyPrint (node = this.#root, prefix = '', isLeft = true) {
         if (node === null || node === undefined) {
@@ -168,7 +181,7 @@ class Tree {
     }
 }
 
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+const tree = new Tree([1, 2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 111, 324]);
 
 tree.print();
 tree.prettyPrint();
