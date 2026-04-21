@@ -133,29 +133,60 @@ class Tree {
         if (typeof callback !== 'function') {
             throw new Error("A callback function is required!");
         };
+        let queue = [];
+        queue.push(this.#root);
+        while (true) {
+            let newQueue = [];
+            for (const i of queue) {
+                callback(i.value);
+                if (i.left !== null) {
+                    newQueue.push(i.left);
+                };
+                if (i.right !== null) {
+                    newQueue.push(i.right);
+                };
+            }
+            if (newQueue.length === 0) return this;
+            queue = newQueue
+        }
+    }
+
+    preOrderForEach(callback) {
+        if (typeof callback !== 'function') {
+            throw new Error("A callback function is required!");
+        };
         if (this.#root === null) return this;
         let current = this.#root;
-        this.helperFunction(callback, current);
+        this.preOrderHelper(callback, current);
         return this
     }
 
-    helperFunction(callback, current) {
+    preOrderHelper(callback, current) {
         callback(current.value);
-        if (current.left === null && current.right === null) {
-            return this;
-        };
         if (current.left !== null) {
-            this.helperFunction(callback, current.left)
+            this.preOrderHelper(callback, current.left)
         };
         if (current.right !== null) {
-            this.helperFunction(callback, current.right)
+            this.preOrderHelper(callback, current.right)
         };
     }
 
-    countHeight() {
-
+    inOrderForEach(callback) {
+        if (typeof callback !== 'function') {
+            throw new Error("A callback function is required!");
+        };
+        if (this.#root === null) return this;
+        let current = this.#root;
+        this.inOrderHelper(callback, current);
+        return this
     }
 
+    inOrderHelper(callback, node) {
+    if (node === null) return;
+    this.inOrderHelper(callback, node.left);
+    callback(node.value);
+    this.inOrderHelper(callback, node.right);
+}
 
     prettyPrint (node = this.#root, prefix = '', isLeft = true) {
         if (node === null || node === undefined) {
@@ -170,22 +201,13 @@ class Tree {
     print() {
         console.log(this.#root)
     }
-
-    printValue(value) {
-        console.log("Currently visiting node:", value);
-    }
-
-    collectValues(value) {
-        const result = [];
-        result.push(value);
-    }
 }
 
 const tree = new Tree([1, 2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 111, 324]);
 
 tree.print();
 tree.prettyPrint();
-tree.levelOrderForEach(console.log);
+tree. inOrderForEach(console.log);
 
 
 
