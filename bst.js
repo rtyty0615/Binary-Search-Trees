@@ -210,7 +210,7 @@ class Tree {
         while (current !== null) {
             if (current.value === value) {
                 const count = this.heightHelper(current) -1;
-                return console.log(count)
+                return count
             }
             if (value < current.value) {
                 current = current.left;
@@ -222,13 +222,13 @@ class Tree {
     }
 
     heightHelper(node) {
-        let count = 0;
-        if (node === null) return count;
-        count += 1;
-        if (this.heightHelper(node.left) >= this.heightHelper(node.right)) {
-            return count += this.heightHelper(node.left)
+        if (node === null) return 0;
+        let leftHeight = this.heightHelper(node.left);
+        let rightHeight = this.heightHelper(node.right);
+        if (leftHeight >= rightHeight) {
+            return leftHeight + 1;
         } else {
-            return count += this.heightHelper(node.right)
+            return rightHeight + 1;
         }
     }
 
@@ -268,7 +268,7 @@ const tree = new Tree([1, 2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 111, 324, 
 // const tree = new Tree([9, 1]);
 tree.print();
 tree.prettyPrint();
-tree.depth(6345);
+tree.height(9);
 
 
 
