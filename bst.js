@@ -203,7 +203,51 @@ class Tree {
         this.postOrderHelper(callback, node.left);
         this.postOrderHelper(callback, node.right);
         callback(node.value);
-}
+    }
+
+    height(value) {
+        let current = this.#root;
+        while (current !== null) {
+            if (current.value === value) {
+                const count = this.heightHelper(current) -1;
+                return console.log(count)
+            }
+            if (value < current.value) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        };
+        return undefined
+    }
+
+    heightHelper(node) {
+        let count = 0;
+        if (node === null) return count;
+        count += 1;
+        if (this.heightHelper(node.left) >= this.heightHelper(node.right)) {
+            return count += this.heightHelper(node.left)
+        } else {
+            return count += this.heightHelper(node.right)
+        }
+    }
+
+    depth(value) {
+        let current = this.#root;
+        let count = 0;
+        while (current !== null) {
+            if (current.value === value) {
+                return count
+            }
+            if (value < current.value) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+            count += 1
+        };
+        return undefined
+    }
 
     prettyPrint (node = this.#root, prefix = '', isLeft = true) {
         if (node === null || node === undefined) {
@@ -220,11 +264,11 @@ class Tree {
     }
 }
 
-const tree = new Tree([1, 2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 111, 324]);
-
+const tree = new Tree([1, 2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 111, 324, 99, 1111, 65]);
+// const tree = new Tree([9, 1]);
 tree.print();
 tree.prettyPrint();
-tree.postOrderForEach(console.log);
+tree.depth(6345);
 
 
 
