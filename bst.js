@@ -182,10 +182,27 @@ class Tree {
     }
 
     inOrderHelper(callback, node) {
-    if (node === null) return;
-    this.inOrderHelper(callback, node.left);
-    callback(node.value);
-    this.inOrderHelper(callback, node.right);
+        if (node === null) return;
+        this.inOrderHelper(callback, node.left);
+        callback(node.value);
+        this.inOrderHelper(callback, node.right);
+}
+
+    postOrderForEach(callback) {
+        if (typeof callback !== 'function') {
+            throw new Error("A callback function is required!");
+        };
+        if (this.#root === null) return this;
+        let current = this.#root;
+        this.postOrderHelper(callback, current);
+        return this
+    }
+
+    postOrderHelper(callback, node) {
+        if (node === null) return;
+        this.postOrderHelper(callback, node.left);
+        this.postOrderHelper(callback, node.right);
+        callback(node.value);
 }
 
     prettyPrint (node = this.#root, prefix = '', isLeft = true) {
@@ -207,7 +224,7 @@ const tree = new Tree([1, 2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 111, 324])
 
 tree.print();
 tree.prettyPrint();
-tree. inOrderForEach(console.log);
+tree.postOrderForEach(console.log);
 
 
 
