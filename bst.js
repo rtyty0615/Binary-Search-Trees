@@ -249,6 +249,33 @@ class Tree {
         return undefined
     }
 
+    isBalanced() {
+        if (this.isBalancedHelper(this.#root) !== false) {
+            return console.log("The tree is balanced!")
+        } else {
+            return console.log("The tree is not balanced!")
+        }
+    }
+
+    isBalancedHelper(node) {
+        if (node === null) return 0;
+        let leftHeight = this.isBalancedHelper(node.left);
+        let rightHeight = this.isBalancedHelper(node.right);
+
+        if (leftHeight === false || rightHeight === false) {
+            return false
+        };
+        if (Math.abs(leftHeight - rightHeight) > 1) {
+            return false;
+        }
+        if (leftHeight >= rightHeight) {
+            return leftHeight + 1;
+        } else {
+            return rightHeight + 1;
+        }
+    }
+
+
     prettyPrint (node = this.#root, prefix = '', isLeft = true) {
         if (node === null || node === undefined) {
             return;
@@ -269,6 +296,7 @@ const tree = new Tree([1, 2, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 111, 324, 
 tree.print();
 tree.prettyPrint();
 tree.height(9);
+tree.isBalanced()
 
 
 
